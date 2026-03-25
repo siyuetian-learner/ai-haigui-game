@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI科技早报 2026年3月24日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif; background: white; color: #1a1a2e; font-size: 13px; line-height: 1.7; }
+  .header { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: white; padding: 36px 48px 32px; border-radius: 12px; margin-bottom: 24px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(99,102,241,0.15); border-radius: 50%; }
+  .header-badge { display: inline-block; background: rgba(99,102,241,0.3); border: 1px solid rgba(99,102,241,0.5); color: #a5b4fc; font-size: 10px; letter-spacing: 2px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; position: relative; z-index: 1; }
+  .header h1 span { color: #818cf8; }
+  .header-meta { color: rgba(255,255,255,0.6); font-size: 12px; }
+  .header-stats { display: flex; gap: 40px; margin-top: 24px; position: relative; z-index: 1; }
+  .stat-num { font-size: 26px; font-weight: 700; color: #818cf8; display: block; }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #6366f1; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, #6366f1, transparent); }
+  .trend-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .trend-card { background: linear-gradient(135deg, #f8f9ff, #eef0ff); border: 1px solid #e0e3ff; border-radius: 10px; padding: 16px; position: relative; overflow: hidden; }
+  .trend-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(to bottom, #6366f1, #8b5cf6); border-radius: 3px 0 0 3px; }
+  .trend-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+  .trend-title { font-size: 12px; font-weight: 700; color: #312e81; margin-bottom: 5px; }
+  .trend-desc { font-size: 11px; color: #6b7280; line-height: 1.6; }
+  .trend-tag { display: inline-block; background: #ede9fe; color: #7c3aed; font-size: 9px; padding: 2px 7px; border-radius: 10px; margin-top: 6px; font-weight: 600; }
+  .insight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: 10px; padding: 16px 20px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; }
+  .insight-icon { font-size: 24px; flex-shrink: 0; }
+  .insight-title { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 5px; }
+  .insight-text { font-size: 12px; color: #78350f; line-height: 1.7; }
+  .news-item { border-bottom: 1px solid #f1f5f9; padding: 16px 0; display: flex; gap: 16px; }
+  .news-item:last-child { border-bottom: none; }
+  .news-num { width: 30px; height: 30px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .news-content { flex: 1; }
+  .news-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+  .news-emoji { font-size: 16px; flex-shrink: 0; }
+  .news-title { font-size: 14px; font-weight: 700; color: #1e1b4b; line-height: 1.5; flex: 1; }
+  .news-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; margin-top: 3px; }
+  .tag-hot { background: #fee2e2; color: #dc2626; }
+  .tag-biz { background: #fef3c7; color: #d97706; }
+  .tag-tech { background: #dbeafe; color: #2563eb; }
+  .tag-policy { background: #d1fae5; color: #059669; }
+  .tag-china { background: #ede9fe; color: #7c3aed; }
+  .news-body { font-size: 12px; color: #4b5563; line-height: 1.8; }
+  .news-body strong { color: #374151; }
+  .footer { background: #1e1b4b; color: rgba(255,255,255,0.5); padding: 18px 48px; font-size: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; margin-top: 24px; }
+  .footer-logo { color: #818cf8; font-weight: 700; font-size: 12px; }
+  .body { padding: 32px 48px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-badge">DAILY AI BRIEFING</div>
+  <h1>AI科技 <span>早报</span></h1>
+  <div class="header-meta">2026年3月24日 · 星期二 · 北京时间 08:50</div>
+  <div class="header-stats">
+    <div><span class="stat-num">10</span><span class="stat-label">条精选资讯</span></div>
+    <div><span class="stat-num">3</span><span class="stat-label">大核心趋势</span></div>
+    <div><span class="stat-num">5+</span><span class="stat-label">信息来源</span></div>
+  </div>
+</div>
+
+<div class="body">
+  <div class="section-title">🔍 关键趋势分析</div>
+  <div class="trend-grid">
+    <div class="trend-card">
+      <span class="trend-icon">📱</span>
+      <div class="trend-title">AI Agent 从"云端"走向"桌面"</div>
+      <div class="trend-desc">Anthropic Claude Dispatch + 屏幕控制、腾讯混元、微博 AI 社交超话——AI 正在从被动应答工具演变为可主动操控设备的智能体，多模态 Agent 进入实用化阶段。</div>
+      <span class="trend-tag">↑ 加速</span>
+    </div>
+    <div class="trend-card">
+      <span class="trend-icon">💰</span>
+      <div class="trend-title">国内大厂 AI 军备竞赛白热化</div>
+      <div class="trend-desc">腾讯 2026 年 AI 投入超 360 亿、阿里千问入局本地生活、滴滴全面 AI 化——互联网巨头正以"翻倍式"力度押注 AI 商业化落地，争夺入口之战全面开打。</div>
+      <span class="trend-tag">↑ 关键战场</span>
+    </div>
+    <div class="trend-card">
+      <span class="trend-icon">⚠️</span>
+      <div class="trend-title">AI 风险警告持续升级</div>
+      <div class="trend-desc">"AI 教父"辛顿警告超级智能或致人类灭绝（10-20% 概率），OpenAI"安全承诺"遭质疑——技术狂飙背后，安全与治理议题正从边缘走向舞台中央。</div>
+      <span class="trend-tag">⚠️ 风险</span>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="insight-icon">💡</div>
+    <div>
+      <div class="insight-title">今日核心洞察</div>
+      <div class="insight-text">今日 AI 领域呈现三条主线：<strong>Agent 落地加速</strong>（Claude 桌面控制、MaxClaw 进微信），<strong>国内大厂加码</strong>（腾讯 360 亿、阿里千问、滴滴 AI），以及<strong>风险讨论升级</strong>（辛顿警告、AI 诈骗案曝光）。值得注意的是，微软主动削减 Copilot 入口，折射出用户对"系统级 AI 监控"的抵触正在反向推动产品策略调整。</div>
+    </div>
+  </div>
+
+  <div class="section-title">📋 今日要闻</div>
+
+  <div class="news-item">
+    <div class="news-num">1</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🖥️</span><span class="news-title">Anthropic 为 Claude 推出桌面控制功能，支持手机远程派发任务</span><span class="news-tag tag-hot">热点</span></div>
+      <div class="news-body">Anthropic 推出 <strong>Claude Cowork</strong> 和 <strong>Claude Code</strong> 桌面产品，新增屏幕控制功能（目前仅 macOS）。亮点功能 <strong>Dispatch</strong>：用户可在手机 App 输入任务，Claude 在桌面端自动完成并推送通知。支持定时重复任务，目前仅 Pro/Max 用户可用（Pro 月付 20 美元）。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">2</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">💰</span><span class="news-title">腾讯 2026 年 AI 投入将超 360 亿，混元元宝成头号功臣</span><span class="news-tag tag-china">国产重磅</span></div>
+      <div class="news-body">腾讯 2025 年财报显示 AI 总投入已达 <strong>180 亿元</strong>，2026 年将翻倍突破 <strong>360 亿</strong>。混元大模型已支撑内部数百个业务场景，元宝作为 C 端入口快速收割大模型红利。利润增速超收入增速，展现强劲成本管控能力。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">3</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🎙️</span><span class="news-title">微博上线首个 AI 社交超话"硅基茶水间"，AI 作为社区居民</span><span class="news-tag tag-china">创新</span></div>
+      <div class="news-body">微博正式上线国内首个 AI 专属社区"<strong>硅基茶水间</strong>"，AI 可自主发帖、评论互动，不再只是工具。用户可将 AI 助手链接发送至该超话，让自己的 AI 在社区内与其他 AI 社交。已入驻包括"龙虾"在内的多种 AI 角色。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">4</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">📉</span><span class="news-title">微软砍掉 Copilot 臃肿入口：Windows 11 回归"简洁主义"</span><span class="news-tag tag-tech">产品</span></div>
+      <div class="news-body">微软宣布大幅精简 Windows11 中 Copilot 各类入口，从截图工具、照片、记事本、小部件中移除冗余 AI 按钮。"全知视角"功能 <strong>Windows Recall</strong> 因隐私争议全面推迟，同时恢复任务栏位置自定义。标志微软 AI 战略从"铺量"转向"做减法"。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">5</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">⚠️</span><span class="news-title">"AI 教父"辛顿警告：超级智能或致人类灭绝，概率 10-20%</span><span class="news-tag tag-policy">风险</span></div>
+      <div class="news-body">诺贝尔奖得主、"AI 教父" <strong>杰弗里·辛顿</strong> 接受《财富》采访，直言科技巨头只顾短期利润。辛顿将 AI 风险分为"坏人滥用"和"AI 自主成为不良行为者"两类，并提出"母性本能"机制设想——让 AI 对人类产生同情而非控制欲。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">6</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🎬</span><span class="news-title">MiniMax 发布全球首个全模态订阅 Token Plan，视频语音绘图一包搞定</span><span class="news-tag tag-china">国产</span></div>
+      <div class="news-body">MiniMax 将编程订阅升级为 <strong>Token Plan</strong>，集成 Hailuo 视频、Speech 语音、Music 音乐、Image 图像全模态模型，Plus 及以上用户无需额外付费。支持在 <strong>OpenClaw（龙虾）</strong>中直接安装 MiniMax 多模态工具集，专业用户可购买资源包享受约 20% 折扣。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">7</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🚕</span><span class="news-title">阿里千问上线打车 AI 办事，本地生活流量迎来大洗牌</span><span class="news-tag tag-china">国产</span></div>
+      <div class="news-body">阿里千问上线"<strong>一句话打车</strong>"功能，用户可通过自然语言描述需求（如"我要空气清新的车"），AI 自动完成选车、支付等操作。此举被视为阿里打通本地生活服务的重要入口，或将引发出行平台流量争夺的新一轮洗牌。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">8</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🤖</span><span class="news-title">MiniMax MaxClaw 接入个人微信，AI 智能体开启"全渠道"时代</span><span class="news-tag tag-china">国产</span></div>
+      <div class="news-body">MiniMax 宣布 <strong>MaxClaw</strong> AI 智能体全面接入个人微信，用户可将 AI 助手直接与微信好友聊天。结合此前腾讯上线的微信 ClawBot 插件，个人 AI 助手生态正在快速向微信平台迁移，AI 进入"全渠道"服务阶段。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">9</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🎵</span><span class="news-title">网易云音乐全面接入 OpenClaw，业内首个 AI Agent 音乐服务上线</span><span class="news-tag tag-china">生态</span></div>
+      <div class="news-body">网易云音乐正式与 OpenClaw 完成深度集成，用户可在 OpenClaw（龙虾）中直接调用音乐播放、推荐、歌单管理等 AI 能力，成为业内首个基于 Agent 架构的音乐服务接口，标志着 AI 助手正在成为娱乐服务的流量新入口。</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-num">10</div>
+    <div class="news-content">
+      <div class="news-header"><span class="news-emoji">🚨</span><span class="news-title">AI "僵尸乐迷"刷榜诈骗千万美元：美国男子利用 AI 创作并薅羊毛</span><span class="news-tag tag-policy">政策法规</span></div>
+      <div class="news-body">美国男子利用 <strong>AI 批量生成音乐</strong>并通过机器人账号在流媒体平台刷榜，诈骗广告分成超 <strong>1000 万美元</strong>。此案为 AI 生成内容监管敲响警钟，随着 AI 创作门槛持续降低，内容真实性和版权溯源将成为平台和监管层必须面对的核心议题。</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="footer-logo">📰 AI科技早报</span>
+  <span>由 QClaw AI 助手自动生成 · 2026年3月24日</span>
+  <span>来源：AIbase · 虎嗅 · 机器之心 · 36氪</span>
+</div>
+</body>
+</html>
