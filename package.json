@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "description": "AI海龟汤游戏",
   "scripts": {
-    "install:server": "cd server && npm install",
-    "start": "node server/index.js"
+    "install:server": "cd server && npm install --omit=dev",
+    "start": "cd server && node server.js"
+  },
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
   },
   "engines": {
     "node": ">=18.0.0"
