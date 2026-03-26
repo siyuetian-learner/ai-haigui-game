@@ -41,6 +41,11 @@ interface JudgeRequest {
   mode: 'judge' | 'hint' | 'summary'
 }
 
+interface AiResponse {
+  answerType: 'yes' | 'no' | 'irrelevant' | 'hint' | 'summary'
+  content: string
+}
+
 interface Story {
   id: string
   title: string
@@ -56,11 +61,6 @@ interface ChatRequest {
   question: string
   story: Story
   history?: Array<{ role: 'user' | 'assistant'; content: string }>
-}
-
-interface AiResponse {
-  answerType: 'yes' | 'no' | 'irrelevant' | 'hint' | 'summary'
-  content: string
 }
 
 function parseAndValidateResponse(content: string): {
@@ -135,7 +135,11 @@ ${story.keyPoints.map((k, i) => `${i + 1}. ${k}`).join('\n')}
 - 不是是非类问题 → 无关`
 }
 
-async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 30000) {
+async function fetchWithTimeout(
+  url: string,
+  options: RequestInit,
+  timeoutMs = 30000
+): Promise<Response> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), timeoutMs)
 
@@ -149,57 +153,79 @@ async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 3
   }
 }
 
-async function callAIApi(messages: Array<{ role: string; content: string }>, requestId: number): Promise<string> {
+async function callAIApi(
+  messages: Array<{ role: string; content: string }>,
+  requestId: number
+): Promise<string> {
   const apiKey = process.env.API_KEY
-  const apiModel = process.env.API_MODEL || 'MiniMax-M2.7'
-  const baseUrl = process.env.API_BASE_URL || 'https://wellapi.ai'
+  const apiModel = process.env.API_MODEL || 'deepseek-chat'
+  const baseUrl = process.env.API_BASE_URL || 'https://api.deepseek.com'
   const apiUrl = `${baseUrl}/v1/chat/completions`
 
   if (!apiKey) {
     throw new Error('API key not configured')
   }
 
+  if (!Array.isArray(messages) || messages.length === 0) {
+    throw new Error('Invalid messages format')
+  }
+
+  if (messages.length > 20) {
+    throw new Error('Too many messages (limit 20)')
+  }
+
   console.log(`[${requestId}] Calling AI API`)
   console.log(`[${requestId}] Model: ${apiModel}`)
   console.log(`[${requestId}] URL: ${apiUrl}`)
 
-  const response = await fetchWithTimeout(
-    apiUrl,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`
+  let response: Response
+
+  try {
+    response = await fetchWithTimeout(
+      apiUrl,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: apiModel,
+          messages,
+          temperature: 0.3,
+          max_tokens: 300
+        })
       },
-      body: JSON.stringify({
-        model: apiModel,
-        messages,
-        max_tokens: 500,
-        temperature: 0.1
-      })
-    },
-    30000
-  )
+      30000
+    )
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('AI request timeout')
+    }
+    throw new Error('Network error when calling AI API')
+  }
 
   const responseText = await response.text()
 
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.status} - ${responseText}`)
+    console.error(`[${requestId}] AI API error status: ${response.status}`)
+    throw new Error(`AI API request failed (${response.status})`)
   }
 
   let data: Record<string, unknown>
   try {
     data = JSON.parse(responseText)
   } catch {
-    throw new Error('Invalid JSON response from API')
+    throw new Error('Invalid JSON response from AI API')
   }
 
   const content = extractAiContent(data)
+
   if (!content) {
-    throw new Error('No content in API response')
+    throw new Error('Empty response from AI')
   }
 
-  return content
+  return content.trim()
 }
 
 app.get('/', (_req: Request, res: Response) => {
@@ -271,7 +297,6 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     const { question, story, history } = req.body as ChatRequest
 
     console.log(`[${requestId}] Chat request - storyId: ${story?.id}`)
-    console.log(`[${requestId}] Question: ${question}`)
 
     if (!question || !story) {
       return res.status(400).json({
@@ -280,23 +305,52 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       })
     }
 
+    if (typeof question !== 'string' || question.trim().length === 0) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Question cannot be empty'
+      })
+    }
+
+    if (question.length > 200) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Question too long'
+      })
+    }
+
+    if (!story.surface || !Array.isArray(story.keyPoints) || story.keyPoints.length === 0) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Invalid story data'
+      })
+    }
+
     const systemPrompt = buildSystemPrompt(story)
+
     const messages: Array<{ role: string; content: string }> = [
       { role: 'system', content: systemPrompt }
     ]
 
-    if (history && history.length > 0) {
-      history.forEach(msg => {
-        messages.push({
-          role: msg.role,
-          content: msg.content
-        })
+    if (history && Array.isArray(history) && history.length > 0) {
+      history.slice(-10).forEach((msg) => {
+        if (
+          msg &&
+          (msg.role === 'user' || msg.role === 'assistant') &&
+          typeof msg.content === 'string' &&
+          msg.content.trim()
+        ) {
+          messages.push({
+            role: msg.role,
+            content: msg.content.trim()
+          })
+        }
       })
     }
 
     messages.push({
       role: 'user',
-      content: question
+      content: question.trim()
     })
 
     const aiContent = await callAIApi(messages, requestId)
@@ -327,116 +381,7 @@ app.use((_req: Request, res: Response) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`)
   console.log(`API Key configured: ${process.env.API_KEY ? 'Yes' : 'No'}`)
-  console.log(`API Model: ${process.env.API_MODEL || 'MiniMax-M2.7'}`)
-  console.log(`API Base URL: ${process.env.API_BASE_URL || 'https://wellapi.ai'}`)
+  console.log(`API Model: ${process.env.API_MODEL || 'deepseek-chat'}`)
+  console.log(`API Base URL: ${process.env.API_BASE_URL || 'https://api.deepseek.com'}`)
   console.log(`Allowed origins: ${ALLOWED_ORIGINS.length ? ALLOWED_ORIGINS.join(', ') : 'ALL'}`)
-})eturn `你是海龟汤游戏的主持人。你的职责是根据故事设定判断玩家的问题是"是"、"否"还是"无关"。
-
-## 故事设定（汤面）
-${story.surface}
-
-## 关键真相要素（用于判断）
-${story.keyPoints.map((k, i) => `${i + 1}. ${k}`).join('\n')}
-
-## 你的回答规则（必须严格遵守）
-1. **只能回答一个字**：是 / 否 / 无关
-2. **不得解释**：不要给出任何理由或长文本
-3. **不得泄露**：不能透露故事结局或超出汤面的信息
-4. **格式严格**：回答必须是"是"、"否"或"无关"之一，不能有其他内容
-
-## 判断逻辑
-- 如果问题与故事关键要素**直接相关**且**符合事实** → 回答"是"
-- 如果问题与故事关键要素**直接相关**但**不符合事实** → 回答"否"
-- 如果问题与故事关键要素**完全无关** → 回答"无关"
-- 如果问题**不是是非类问题**（如开放式问题、选择问题）→ 回答"无关"`
-}
-
-async function callAIApi(messages: Array<{ role: string, content: string }>): Promise<string> {
-  const apiKey = process.env.API_KEY
-const apiModel = process.env.API_MODEL || 'deepseek-chat'
-const baseUrl = process.env.API_BASE_URL || 'https://api.deepseek.com'
-
-  if (!apiKey) {
-    throw new Error('API key not configured')
-  }
-
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: apiModel,
-      messages,
-      max_tokens: 500,
-      temperature: 0.1
-    })
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`API request failed: ${response.status} - ${errorText}`)
-  }
-
-  const data = await response.json() as Record<string, unknown>
-  const content = extractAiContent(data)
-  
-  if (!content) {
-    throw new Error('No content in API response')
-  }
-
-  return content
-}
-
-app.post('/api/chat', async (req, res) => {
-  const requestId = Date.now()
-
-  try {
-    const { question, story, history } = req.body as ChatRequest
-
-    console.log(`[${requestId}] Chat request for story: ${story?.id}`)
-    console.log(`[${requestId}] Question: ${question}`)
-
-    if (!question || !story) {
-      return res.status(400).json({ error: 'Missing required fields: question and story are required' })
-    }
-
-    const systemPrompt = buildSystemPrompt(story)
-    
-    const messages: Array<{ role: string, content: string }> = [
-      { role: 'system', content: systemPrompt }
-    ]
-
-    if (history && history.length > 0) {
-      history.forEach(msg => {
-        messages.push({ role: msg.role, content: msg.content })
-      })
-    }
-
-    messages.push({ role: 'user', content: question })
-
-    console.log(`[${requestId}] Calling AI API...`)
-    
-    const aiContent = await callAIApi(messages)
-    console.log(`[${requestId}] AI response: ${aiContent}`)
-
-    const validated = parseAndValidateResponse(aiContent)
-    console.log(`[${requestId}] Validated response:`, validated)
-
-    res.json(validated)
-  } catch (error) {
-    console.error(`[${requestId}] Server error:`, error)
-    res.status(500).json({
-      error: 'Internal server error',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    })
-  }
-})
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-  console.log(`API Key configured: ${process.env.API_KEY ? 'Yes' : 'No'}`)
-  console.log(`API Model: ${process.env.API_MODEL || 'MiniMax-M2.7'}`)
-  console.log(`API Base URL: ${process.env.API_BASE_URL || 'https://wellapi.ai'}`)
 })
