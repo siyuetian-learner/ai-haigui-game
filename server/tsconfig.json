@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,6 +12,6 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["index.ts"],
+  "include": ["src/index.ts"],
   "exclude": ["node_modules", "dist"]
 }
