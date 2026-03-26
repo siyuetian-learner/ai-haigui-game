@@ -5,11 +5,13 @@ node_modules/
 dist/
 build/
 
-# Environment files (keep .env.example but not .env with secrets)
-web/.env
-server/.env
-.env.local
-.env.*.local
+# TypeScript
+*.tsbuildinfo
+
+# Environment files (DO NOT COMMIT SECRETS)
+.env
+.env.*
+!.env.example
 
 # IDE
 .idea/
@@ -33,3 +35,11 @@ coverage/
 # Cache
 .cache/
 .eslintcache
+
+# Package managers
+.pnpm-store/
+.yarn/
+
+# Temp
+tmp/
+temp/
