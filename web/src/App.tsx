@@ -9,16 +9,6 @@ import Guide from './pages/Guide';
 import NotFound from './pages/NotFound';
 
 export default function App() {
-  const [stars] = useState<Array<{ id: number; x: number; y: number; size: number; opacity: number; animationDuration: string }>>(() => {
-    return Array.from({ length: 60 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.7 + 0.3,
-      animationDuration: `${Math.random() * 3 + 2}s`,
-    }));
-  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -62,20 +52,38 @@ export default function App() {
     navigate('/home');
   };
 
-  if (!isWelcomePage) {
-    return (
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/result" element={<Result />} />
-          <Route path="/guide" element={<Guide />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    );
+  if (isWelcomePage) {
+    return <WelcomePage onStart={handleStartGame} />;
   }
+
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/home" element={<Home />} />
+        <Route path="/game" element={<Game />} />
+        <Route path="/result" element={<Result />} />
+        <Route path="/guide" element={<Guide />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
+}
+
+function WelcomePage({ onStart }: { onStart: () => void }) {
+  const [stars] = useState<Array<{ id: number; x: number; y: number; size: number; opacity: number; animationDuration: string }>>(() => {
+    return Array.from({ length: 60 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.7 + 0.3,
+      animationDuration: `${Math.random() * 3 + 2}s`,
+    }));
+  });
+
+  const handleStartGame = () => {
+    onStart();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-950 via-purple-900 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
@@ -235,78 +243,6 @@ export default function App() {
           <p className="text-gray-300 text-sm handwriting">
             准备好挑战你的智慧了吗？
           </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function WelcomePage() {
-  const navigate = useNavigate();
-  const [stars] = useState<Array<{ id: number; x: number; y: number; size: number; opacity: number; animationDuration: string }>>(() => {
-    return Array.from({ length: 60 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.7 + 0.3,
-      animationDuration: `${Math.random() * 3 + 2}s`,
-    }));
-  });
-
-  const handleStartGame = () => {
-    navigate('/home');
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-purple-900 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {stars.map((star) => (
-        <div
-          key={star.id}
-          className="absolute rounded-full bg-white animate-pulse"
-          style={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            opacity: star.opacity,
-            animationDuration: star.animationDuration,
-          }}
-        />
-      ))}
-
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.7s' }}></div>
-      </div>
-
-      <div className="relative max-w-2xl w-full z-10">
-        <div className="text-center space-y-8 backdrop-blur-lg bg-slate-900/50 p-8 md:p-12 rounded-3xl border border-purple-500/30 shadow-2xl">
-          <div className="flex justify-center mb-4">
-            <div className="oracle-turtle">🐢</div>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold handwriting text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-purple-400">
-            AI海龟汤
-          </h1>
-          <p className="text-gray-300 text-lg md:text-xl font-light tracking-widest handwriting">
-            一场推理与真相的神秘之旅
-          </p>
-
-          <div className="space-y-4">
-            <button
-              onClick={handleStartGame}
-              className="px-12 py-4 bg-gradient-to-r from-red-900 to-red-800 text-white rounded-xl hover:scale-105 active:scale-95 transition-all"
-            >
-              开始游戏
-            </button>
-            <button
-              onClick={() => navigate('/guide')}
-              className="block w-full px-12 py-3 text-gray-400 hover:text-white transition-colors"
-            >
-              新手引导
-            </button>
-          </div>
         </div>
       </div>
     </div>
