@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response as ExpressResponse } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
@@ -9,7 +9,7 @@ const PORT = Number(process.env.PORT || 3002)
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
-  .map(item => item.trim())
+  .map((item) => item.trim())
   .filter(Boolean)
 
 app.use(express.json({ limit: '1mb' }))
@@ -139,7 +139,7 @@ async function fetchWithTimeout(
   url: string,
   options: RequestInit,
   timeoutMs = 30000
-): Promise<Response> {
+): Promise<globalThis.Response> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), timeoutMs)
 
@@ -178,7 +178,7 @@ async function callAIApi(
   console.log(`[${requestId}] Model: ${apiModel}`)
   console.log(`[${requestId}] URL: ${apiUrl}`)
 
-  let response: Response
+  let response: globalThis.Response
 
   try {
     response = await fetchWithTimeout(
@@ -228,14 +228,14 @@ async function callAIApi(
   return content.trim()
 }
 
-app.get('/', (_req: Request, res: Response) => {
+app.get('/', (_req: Request, res: ExpressResponse) => {
   res.json({
     ok: true,
     message: 'AI Haigui Game backend is running'
   })
 })
 
-app.get('/api/health', (_req: Request, res: Response) => {
+app.get('/api/health', (_req: Request, res: ExpressResponse) => {
   res.json({
     ok: true,
     status: 'ok',
@@ -244,7 +244,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
   })
 })
 
-app.get('/api/test', (_req: Request, res: Response) => {
+app.get('/api/test', (_req: Request, res: ExpressResponse) => {
   res.json({
     ok: true,
     message: 'Test endpoint working!',
@@ -252,7 +252,7 @@ app.get('/api/test', (_req: Request, res: Response) => {
   })
 })
 
-app.post('/api/ai/judge', async (req: Request, res: Response) => {
+app.post('/api/ai/judge', async (req: Request, res: ExpressResponse) => {
   const requestId = Date.now()
 
   try {
@@ -290,7 +290,7 @@ app.post('/api/ai/judge', async (req: Request, res: Response) => {
   }
 })
 
-app.post('/api/chat', async (req: Request, res: Response) => {
+app.post('/api/chat', async (req: Request, res: ExpressResponse) => {
   const requestId = Date.now()
 
   try {
@@ -371,7 +371,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
 })
 
-app.use((_req: Request, res: Response) => {
+app.use((_req: Request, res: ExpressResponse) => {
   res.status(404).json({
     ok: false,
     error: 'Not found'
