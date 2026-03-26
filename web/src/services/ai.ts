@@ -4,7 +4,7 @@ import type { Story } from '../types/story'
 
 export type AiMode = 'judge' | 'hint' | 'summary'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+const API_BASE_URL = import.meta.env.VITE_AI_API_URL || '/api'
 const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 30000
 
 export class AiServiceError extends Error {
@@ -121,7 +121,7 @@ export async function askAI(params: AskAIParams): Promise<AiJudgeResponse> {
 
   try {
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/api/chat`,
+      `${API_BASE_URL}/chat`,
       {
         method: 'POST',
         headers: {
