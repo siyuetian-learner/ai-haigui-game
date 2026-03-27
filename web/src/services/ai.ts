@@ -121,7 +121,7 @@ export async function askAI(params: AskAIParams): Promise<AiJudgeResponse> {
 
   try {
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/chat`,
+      `${API_BASE_URL}/api/chat`,
       {
         method: 'POST',
         headers: {
