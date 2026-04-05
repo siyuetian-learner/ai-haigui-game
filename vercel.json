@@ -1,12 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "web/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "web/dist"
-      }
-    }
-  ]
+  "buildCommand": "cd web && npm install && npm run build",
+  "outputDirectory": "web/dist",
+  "installCommand": "cd web && npm install"
 }
