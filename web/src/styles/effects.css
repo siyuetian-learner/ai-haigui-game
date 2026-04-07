@@ -1,364 +1,392 @@
-/*
-  AI海龟汤 - 神秘悬疑视觉效果
-  深蓝暗色雾气背景、档案系统风格动效
-*/
-
-@keyframes fog-drift {
-  0% { transform: translateX(0) translateY(0); opacity: 0.4; }
-  33% { transform: translateX(20px) translateY(-10px); opacity: 0.6; }
-  66% { transform: translateX(-10px) translateY(15px); opacity: 0.5; }
-  100% { transform: translateX(0) translateY(0); opacity: 0.4; }
-}
-
-@keyframes fog-drift-2 {
-  0% { transform: translateX(0) translateY(0) scale(1); opacity: 0.3; }
-  50% { transform: translateX(-25px) translateY(20px) scale(1.05); opacity: 0.5; }
-  100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.3; }
-}
-
-@keyframes particle-float {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.3; }
-  100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-}
-
-@keyframes cold-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(99, 102, 241, 0.1), 0 0 20px rgba(99, 102, 241, 0.05); }
-  50% { box-shadow: 0 0 12px rgba(99, 102, 241, 0.2), 0 0 30px rgba(99, 102, 241, 0.1); }
-}
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.02); }
-}
-
-@keyframes seal-pulse {
-  0% { box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 0 15px rgba(99, 102, 241, 0.1); }
-  50% { box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4), 0 0 25px rgba(99, 102, 241, 0.2); }
-  100% { box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 0 15px rgba(99, 102, 241, 0.1); }
-}
-
-@keyframes result-reveal-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes typewriter-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes thinking-pulse {
-  0% { opacity: 0.3; transform: scale(0.98); }
-  50% { opacity: 0.7; transform: scale(1.01); }
-  100% { opacity: 0.3; transform: scale(0.98); }
-}
-
-@keyframes card-hover-glow {
-  0% { box-shadow: 0 0 0 1px var(--border), 0 4px 12px rgba(0, 0, 0, 0.3); }
-  100% { box-shadow: 0 0 0 1px var(--accent-border), 0 8px 32px rgba(99, 102, 241, 0.15); }
-}
-
-/* 主背景 - 深海雾气层 */
-.app-bg {
-  position: relative;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99, 102, 241, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 30% at 20% 60%, rgba(59, 130, 246, 0.02) 0%, transparent 45%),
-    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
-}
-
-/* 雾气层 */
-.app-bg::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 100% 60% at 30% 20%, rgba(99, 102, 241, 0.025) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 50% at 70% 70%, rgba(139, 92, 246, 0.02) 0%, transparent 45%);
-  animation: fog-drift 20s ease-in-out infinite;
-  opacity: 0.8;
-}
-
-.app-bg::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 70% 40% at 60% 40%, rgba(59, 130, 246, 0.015) 0%, transparent 45%),
-    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(99, 102, 241, 0.02) 0%, transparent 40%);
-  animation: fog-drift-2 25s ease-in-out infinite;
-  animation-delay: -10s;
-  opacity: 0.6;
-}
-
-#root {
-  position: relative;
-  z-index: 1;
-}
-
-/* 冷光边框效果 */
-.cold-border {
-  position: relative;
-}
-
-.cold-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), transparent, rgba(139, 92, 246, 0.2));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.cold-border:hover::before {
-  opacity: 1;
-}
-
-/* 档案卡片基础 */
-.archive-card {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.archive-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-border), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.archive-card:hover {
-  border-color: var(--border-light);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--accent-border);
-}
-
-.archive-card:hover::before {
-  opacity: 1;
-}
-
-/* 封印按钮 */
-.seal-button {
-  position: relative;
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  color: var(--text-h);
-  padding: 10px 24px;
-  border-radius: 2px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.seal-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--accent-bg), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.seal-button:hover {
-  border-color: var(--accent-border);
-  box-shadow: 0 0 20px var(--accent-bg), inset 0 0 20px var(--accent-bg);
-}
-
-.seal-button:hover::before {
-  opacity: 1;
-}
-
-.seal-button:active {
-  transform: scale(0.98);
-}
-
-/* 主要行动按钮 */
-.seal-button.primary {
-  background: linear-gradient(135deg, var(--bg-3), var(--bg-2));
-  border-color: var(--accent-border);
-}
-
-.seal-button.primary:hover {
-  background: linear-gradient(135deg, var(--accent-bg), var(--bg-3));
-  box-shadow: 0 0 30px var(--accent-bg), inset 0 0 30px var(--accent-bg);
-}
-
-/* 档案封签标签 */
-.archive-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  border-radius: 2px;
-  border: 1px solid;
-  font-weight: 500;
-}
-
-.archive-tag.easy {
-  color: #60a5fa;
-  border-color: rgba(96, 165, 250, 0.3);
-  background: rgba(96, 165, 250, 0.08);
-}
-
-.archive-tag.medium {
-  color: #a78bfa;
-  border-color: rgba(167, 139, 250, 0.3);
-  background: rgba(167, 139, 250, 0.08);
-}
-
-.archive-tag.hard {
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.3);
-  background: rgba(248, 113, 113, 0.08);
-}
-
-.archive-tag.hell {
-  color: #fb7185;
-  border-color: rgba(251, 113, 133, 0.4);
-  background: rgba(251, 113, 133, 0.1);
-  animation: seal-pulse 3s ease-in-out infinite;
-}
-
-/* 审讯终端气泡 */
-.interrogation-bubble {
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 2px;
-  position: relative;
-}
-
-.interrogation-bubble.user {
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  margin-left: auto;
-}
-
-.interrogation-bubble.ai {
-  background: rgba(99, 102, 241, 0.06);
-  border: 1px solid var(--accent-border);
-  border-left: 2px solid var(--accent);
-}
-
-/* 查询装置输入框 */
-.query-input {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 12px 16px;
-  color: var(--text-h);
-  transition: all 0.3s ease;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.query-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--accent-border), 0 0 20px var(--accent-bg);
-}
-
-.query-input::placeholder {
-  color: var(--text);
-  opacity: 0.6;
-}
-
-/* 思考状态 */
-.thinking-indicator {
-  display: inline-flex;
-  gap: 4px;
-  padding: 8px 12px;
-}
-
-.thinking-indicator span {
-  width: 4px;
-  height: 4px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: thinking-pulse 1.2s ease-in-out infinite;
-}
-
-.thinking-indicator span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.thinking-indicator span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* 光标闪烁 */
-.cursor-blink::after {
-  content: '|';
-  animation: typewriter-blink 1s step-end infinite;
-  color: var(--accent);
-}
-
-/* 渐显动画 */
-.reveal-up {
-  animation: result-reveal-up 0.5s ease-out forwards;
-}
-
-/* 难度层级区分 */
-.difficulty-indicator {
-  display: flex;
-  gap: 3px;
-}
-
-.difficulty-indicator span {
-  width: 20px;
-  height: 3px;
-  border-radius: 1px;
-  background: var(--border);
-}
-
-.difficulty-indicator.easy span:nth-child(1) {
-  background: #60a5fa;
-}
-
-.difficulty-indicator.medium span:nth-child(-n+2) {
-  background: #a78bfa;
-}
-
-.difficulty-indicator.hard span:nth-child(-n+3) {
-  background: #f87171;
-}
-
-.difficulty-indicator.hell span {
-  background: #fb7185;
-}
-
-/* 浮游粒子 */
-.floating-particle {
-  position: fixed;
-  width: 2px;
-  height: 2px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-  animation: particle-float 15s linear infinite;
-}
-
 /* 玻璃毛玻璃效果 - 暗色版 */
 .glass-dark {
   background: rgba(15, 18, 24, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
+}
+
+/* ============================================
+   深海欢迎页 - 神秘悬疑风格
+   ============================================ */
+
+/* 深海粒子 */
+.particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.6), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: deep-particle-float linear infinite;
+}
+
+@keyframes deep-particle-float {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(30px);
+    opacity: 0;
+  }
+}
+
+/* 水母动画 */
+.jellyfish {
+  animation: jellyfish-float 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.jellyfish::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(20px);
+  opacity: 0.5;
+}
+
+@keyframes jellyfish-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-25px) translateX(5px);
+  }
+}
+
+/* 深海雾气层 */
+.fog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fog-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(99, 102, 241, 0.03) 20%,
+    rgba(139, 92, 246, 0.02) 50%,
+    rgba(99, 102, 241, 0.03) 80%,
+    transparent
+  );
+}
+
+.fog-1 {
+  animation: fog-drift 25s ease-in-out infinite;
+}
+
+.fog-2 {
+  animation: fog-drift-2 30s ease-in-out infinite;
+  animation-delay: -15s;
+}
+
+/* 海浪效果 */
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.wave svg {
+  display: block;
+}
+
+/* ============================================
+   神秘标题 - 手写书法感 + 冷紫发光
+   ============================================ */
+
+.mystic-title {
+  font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', 'STSong', serif;
+  letter-spacing: 0.15em;
+  text-shadow:
+    0 0 10px rgba(99, 102, 241, 0.5),
+    0 0 20px rgba(99, 102, 241, 0.3),
+    0 0 40px rgba(99, 102, 241, 0.2),
+    0 0 60px rgba(139, 92, 246, 0.1);
+  animation: title-glow 4s ease-in-out infinite;
+  position: relative;
+}
+
+.mystic-title::before {
+  content: 'AI海龟汤';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2));
+  filter: blur(8px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+@keyframes title-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px rgba(99, 102, 241, 0.5),
+      0 0 20px rgba(99, 102, 241, 0.3),
+      0 0 40px rgba(99, 102, 241, 0.2),
+      0 0 60px rgba(139, 92, 246, 0.1);
+  }
+  50% {
+    text-shadow:
+      0 0 15px rgba(99, 102, 241, 0.6),
+      0 0 30px rgba(99, 102, 241, 0.4),
+      0 0 50px rgba(99, 102, 241, 0.3),
+      0 0 80px rgba(139, 92, 246, 0.2);
+  }
+}
+
+/* ============================================
+   规则卡片 - 档案面板风格
+   ============================================ */
+
+.rule-card {
+  position: relative;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  background: linear-gradient(180deg, rgba(15, 20, 35, 0.7), rgba(10, 15, 25, 0.8));
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.05);
+}
+
+.rule-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2), transparent);
+}
+
+.rule-card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(99, 102, 241, 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.rule-number {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.6));
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
+  animation: number-pulse 3s ease-in-out infinite;
+}
+
+@keyframes number-pulse {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+    transform: scale(1.1);
+  }
+}
+
+/* ============================================
+   能量核心按钮 - 封印装置风格
+   ============================================ */
+
+.energy-core-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+}
+
+.energy-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  animation: energy-spin linear infinite;
+}
+
+.energy-ring-outer {
+  width: 200px;
+  height: 200px;
+  border-color: rgba(99, 102, 241, 0.2) rgba(99, 102, 241, 0.1) rgba(99, 102, 241, 0.05) transparent;
+  animation-duration: 20s;
+}
+
+.energy-ring-middle {
+  width: 160px;
+  height: 160px;
+  border-color: rgba(139, 92, 246, 0.15) rgba(139, 92, 246, 0.08) transparent rgba(139, 92, 246, 0.1);
+  animation-duration: 15s;
+  animation-direction: reverse;
+}
+
+.energy-ring-inner {
+  width: 120px;
+  height: 120px;
+  border-color: rgba(99, 102, 241, 0.1) transparent rgba(99, 102, 241, 0.15) rgba(99, 102, 241, 0.05);
+  animation-duration: 10s;
+}
+
+@keyframes energy-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.energy-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: energy-rotate 30s linear infinite;
+}
+
+.energy-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.8), transparent);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 -60px;
+  animation: particle-orbit 4s ease-in-out infinite;
+}
+
+@keyframes particle-orbit {
+  0%, 100% {
+    opacity: 0.3;
+    transform: rotate(0deg) translateX(2px);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) translateX(4px);
+  }
+}
+
+@keyframes energy-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.energy-core-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(30, 35, 55, 0.95), rgba(15, 20, 35, 0.98));
+  border: 2px solid rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 0 20px rgba(99, 102, 241, 0.2),
+    0 0 40px rgba(99, 102, 241, 0.1),
+    inset 0 0 20px rgba(99, 102, 241, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.energy-core-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.3), transparent, rgba(139, 92, 246, 0.2), transparent);
+  animation: energy-spin 8s linear infinite;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.energy-core-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.15), transparent 70%);
+  animation: core-pulse 3s ease-in-out infinite;
+}
+
+@keyframes core-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(99, 102, 241, 0.2),
+      0 0 40px rgba(99, 102, 241, 0.1),
+      inset 0 0 20px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(99, 102, 241, 0.3),
+      0 0 60px rgba(99, 102, 241, 0.15),
+      inset 0 0 30px rgba(99, 102, 241, 0.15);
+  }
+}
+
+.energy-core-button:hover {
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(99, 102, 241, 0.4),
+    0 0 60px rgba(99, 102, 241, 0.2),
+    0 0 100px rgba(139, 92, 246, 0.1),
+    inset 0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+.energy-core-button:hover::before {
+  opacity: 1;
+  animation-duration: 4s;
+}
+
+.energy-core-button:hover::after {
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.25), transparent 70%);
+}
+
+.energy-core-text {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--text-h);
+  text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+.energy-core-shine {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 30%;
+  height: 30%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ============================================
+   欢迎页底部提示文案
+   ============================================ */
+
+.welcome-footer-text {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.5;
+  letter-spacing: 0.1em;
+  filter: blur(0.3px);
+  text-align: center;
 }
