@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { STORIES } from '../data/stories'
 import GameCard from '../components/GameCard'
+import BrokenButton from '../components/BrokenButton'
 
 export default function Home() {
   return (
@@ -13,18 +14,16 @@ export default function Home() {
             无关」，帮你逐步还原真相。
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link
-              to="/guide"
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition-all hover:bg-white/10"
-            >
+            <BrokenButton to="/guide" className="text-sm font-medium" variant="neutral">
               新手引导
-            </Link>
-            <Link
+            </BrokenButton>
+            <BrokenButton
               to={`/game?storyId=${STORIES[0]?.id ?? ''}`}
-              className="rounded-xl border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-400/40"
+              className="text-sm font-medium"
+              variant="primary"
             >
               直接开始（示例题）
-            </Link>
+            </BrokenButton>
           </div>
         </div>
         <Link

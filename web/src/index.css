@@ -5,65 +5,72 @@
 @tailwind utilities;
 
 :root {
-  --text: #8b9bb4;
-  --text-h: #e2e8f0;
-  --bg: #0a0c10;
-  --bg-2: #0f1218;
-  --bg-3: #161921;
-  --border: #1e2433;
-  --border-light: #2a3244;
-  --code-bg: #12151c;
-  --accent: #6366f1;
-  --accent-2: #818cf8;
-  --accent-bg: rgba(99, 102, 241, 0.12);
-  --accent-border: rgba(99, 102, 241, 0.4);
-  --social-bg: rgba(30, 36, 51, 0.6);
-  --shadow: rgba(0, 0, 0, 0.4);
-
-  --fog-1: rgba(99, 102, 241, 0.03);
-  --fog-2: rgba(139, 92, 246, 0.02);
-  --fog-3: rgba(59, 130, 246, 0.02);
-
-  --cold-glow: rgba(99, 102, 241, 0.15);
-  --danger: rgba(239, 68, 68, 0.6);
-  --success: rgba(52, 211, 153, 0.5);
+  /* 默认直接使用暗色，避免依赖系统 prefers-color-scheme */
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 17px/155% var(--sans);
-  letter-spacing: 0.2px;
-  color-scheme: dark;
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
 
-@media (max-width: 1024px) {
-  :root {
+  @media (max-width: 1024px) {
     font-size: 16px;
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
 #root {
-  width: 100%;
-  max-width: 1200px;
+  width: 1126px;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
+  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  position: relative;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
 }
 
 h1,
@@ -71,22 +78,26 @@ h2 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
-  letter-spacing: -0.3px;
 }
 
 h1 {
-  font-size: 52px;
-  letter-spacing: -1.5px;
-  margin: 28px 0;
-  text-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
 }
-
 h2 {
-  font-size: 22px;
-  line-height: 130%;
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
   margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
 }
-
 p {
   margin: 0;
 }
@@ -104,42 +115,4 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-light);
-}
-
-::selection {
-  background: var(--accent-bg);
-  color: var(--text-h);
-}
-
-input,
-textarea {
-  font-family: inherit;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
 }
