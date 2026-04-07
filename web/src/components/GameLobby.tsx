@@ -16,7 +16,7 @@ export default function GameLobby() {
             </div>
             <div>
               <div className="text-xl font-semibold tracking-wide text-white">AI海龟汤</div>
-              <div className="text-xs tracking-[0.28em] text-slate-300/50">MYSTIC CASES</div>
+              <div className="text-xs tracking-[0.28em] text-slate-300/50">神秘档案</div>
             </div>
           </div>
 
@@ -33,7 +33,7 @@ export default function GameLobby() {
             <div className="mb-5 rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,28,0.82),rgba(6,10,22,0.66))] p-6 shadow-[0_18px_60px_rgba(0,0,0,0.32)] backdrop-blur-xl">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-3xl">
-                  <p className="mb-3 text-xs uppercase tracking-[0.34em] text-cyan-100/55">Archive Hall</p>
+                  <p className="mb-3 text-xs uppercase tracking-[0.34em] text-cyan-100/55">档案大厅</p>
                   <h2 className="text-4xl font-semibold tracking-wide text-white">AI海龟汤</h2>
                   <p className="mt-4 text-lg leading-8 text-slate-200/78">
                     阅读「汤面」，用是非类问题逼近真相。AI 主持人只回答「是 / 否 / 无关」，帮你逐步还原事件。
@@ -75,14 +75,33 @@ export default function GameLobby() {
 }
 
 function CaseCard({ story }: { story: Story }) {
-  const difficultyColors: Record<string, string> = {
-    '简单': 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100/85',
-    '中等': 'border-amber-300/20 bg-amber-400/10 text-amber-100/85',
-    '困难': 'border-orange-300/20 bg-orange-400/10 text-orange-100/85',
-    '地狱': 'border-red-300/20 bg-red-400/10 text-red-100/85',
+  const difficultyLabels: Record<string, string> = {
+    'easy': '简单',
+    'medium': '中等',
+    'hard': '困难',
+    'hell': '地狱',
   }
 
-  const difficultyColor = difficultyColors[story.difficulty] || difficultyColors['简单']
+  const categoryLabels: Record<string, string> = {
+    'classic': '经典',
+    'daily': '日常',
+    'thriller': '惊悚',
+    'twist': '反转',
+    'brain': '脑洞',
+    'black': '黑汤',
+    'red': '红汤',
+  }
+
+  const difficultyColors: Record<string, string> = {
+    'easy': 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100/85',
+    'medium': 'border-amber-300/20 bg-amber-400/10 text-amber-100/85',
+    'hard': 'border-orange-300/20 bg-orange-400/10 text-orange-100/85',
+    'hell': 'border-red-300/20 bg-red-400/10 text-red-100/85',
+  }
+
+  const difficultyLabel = difficultyLabels[story.difficulty] || story.difficulty
+  const categoryLabel = categoryLabels[story.category] || story.category
+  const difficultyColor = difficultyColors[story.difficulty] || difficultyColors['easy']
 
   return (
     <button
@@ -96,12 +115,12 @@ function CaseCard({ story }: { story: Story }) {
             <p className="mt-4 max-w-xl text-lg leading-8 text-slate-200/76">{story.surface}</p>
           </div>
           <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm ${difficultyColor}`}>
-            {story.difficulty}
+            {difficultyLabel}
           </span>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Badge>{story.category}</Badge>
+          <Badge>{categoryLabel}</Badge>
         </div>
       </div>
     </button>
