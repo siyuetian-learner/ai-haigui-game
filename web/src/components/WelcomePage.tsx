@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 export default function AISeaTurtleMysticLanding() {
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen overflow-hidden bg-[#050914] text-white relative">
       <BackgroundLayers />
@@ -35,7 +39,9 @@ export default function AISeaTurtleMysticLanding() {
                 <RulePanel />
 
                 <div className="mt-8 flex flex-col items-center gap-5">
-                  <button className="group relative inline-flex items-center justify-center rounded-[18px] border border-[#7a7dff]/30 bg-[linear-gradient(180deg,#0d1330,#0a1025)] px-10 py-4 shadow-[0_0_0_1px_rgba(122,125,255,0.12),0_10px_35px_rgba(56,66,150,0.35),inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(146,150,255,0.2),0_18px_45px_rgba(70,97,215,0.45),0_0_32px_rgba(103,122,255,0.25)] focus:outline-none focus:ring-2 focus:ring-cyan-300/40">
+                  <button
+                    onClick={() => navigate('/home')}
+                    className="group relative inline-flex items-center justify-center rounded-[18px] border border-[#7a7dff]/30 bg-[linear-gradient(180deg,#0d1330,#0a1025)] px-10 py-4 shadow-[0_0_0_1px_rgba(122,125,255,0.12),0_10px_35px_rgba(56,66,150,0.35),inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(146,150,255,0.2),0_18px_45px_rgba(70,97,215,0.45),0_0_32px_rgba(103,122,255,0.25)] focus:outline-none focus:ring-2 focus:ring-cyan-300/40">
                     <span className="absolute inset-[1px] rounded-[17px] bg-[radial-gradient(circle_at_50%_10%,rgba(131,138,255,0.26),transparent_38%),linear-gradient(180deg,rgba(16,21,48,0.82),rgba(8,12,24,0.9))]" />
                     <span className="absolute inset-0 rounded-[18px] bg-[conic-gradient(from_180deg_at_50%_50%,rgba(120,130,255,0.0),rgba(120,130,255,0.14),rgba(99,228,255,0.0),rgba(120,130,255,0.16),rgba(120,130,255,0.0))] opacity-70 blur-sm" />
                     <span className="absolute -left-2 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-cyan-300/25 blur-lg transition group-hover:bg-cyan-300/40" />
