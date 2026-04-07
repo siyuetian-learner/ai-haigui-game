@@ -32,19 +32,19 @@ export default function PromptInput(props: {
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={disabled}
-            className="w-full resize-none rounded-xl border border-white/10 bg-black/30 px-4 py-3 pr-12 text-sm text-white placeholder:text-white/40 transition-all focus:border-violet-500/40 focus:bg-black/40 focus:outline-none focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+            className="query-input w-full resize-none"
             style={{ minHeight: '44px' }}
           />
           {disabled && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-violet-400" />
+              <div className="h-4 w-4 animate-spin rounded-full border border-[var(--border)] border-t-[var(--accent)]" />
             </div>
           )}
         </div>
         <button
           type="submit"
           disabled={disabled || value.trim().length === 0}
-          className="flex items-center justify-center rounded-xl bg-gradient-to-r from-violet-500/30 to-purple-500/30 px-5 py-3 text-sm font-medium text-violet-100 transition-all hover:from-violet-500/40 hover:to-purple-500/40 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className="seal-button flex items-center justify-center px-4"
           style={{ minHeight: '44px' }}
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

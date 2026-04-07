@@ -3,26 +3,34 @@ import DifficultyTag from './DifficultyTag'
 
 export default function GameCard({ story }: { story: Story }) {
   return (
-    <article className="group rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur transition-shadow duration-200 hover:border-violet-400/25 hover:shadow-[0_0_24px_rgba(192,132,252,0.18)]">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-base font-semibold text-white">{story.title}</h3>
-          <p className="mt-1 line-clamp-2 text-sm text-white/70">{story.surface}</p>
+    <article className="archive-card group cursor-pointer p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-base font-medium text-[var(--text-h)] transition-colors group-hover:text-[var(--accent-2)]">
+            {story.title}
+          </h3>
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--text)]">
+            {story.surface}
+          </p>
         </div>
         <DifficultyTag difficulty={story.difficulty} />
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         {story.tags.slice(0, 3).map((t) => (
           <span
             key={t}
-            className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-white/70"
+            className="archive-tag text-[10px]"
           >
             {t}
           </span>
         ))}
       </div>
+
+      <div className="mt-4 flex items-center gap-2 text-xs text-[var(--text)] opacity-0 transition-opacity group-hover:opacity-60">
+        <span className="tracking-wider">开启调查</span>
+        <span className="transition-transform group-hover:translate-x-1">→</span>
+      </div>
     </article>
   )
 }
-
