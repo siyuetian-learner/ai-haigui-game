@@ -1,50 +1,54 @@
 import { Link } from 'react-router-dom'
-import DeepSeaBackground from '../components/DeepSeaBackground'
-import MysticTitle from '../components/MysticTitle'
-import RuleCard from '../components/RuleCard'
-import EnergyCoreButton from '../components/EnergyCoreButton'
 import { STORIES } from '../data/stories'
 import GameCard from '../components/GameCard'
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen">
-      <DeepSeaBackground />
-
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md space-y-12">
-          <MysticTitle />
-
-          <RuleCard />
-
-          <div className="flex flex-col items-center gap-8">
-            <EnergyCoreButton />
-
-            <p className="welcome-footer-text">
-              准备好挑战你的智慧了吗？
-            </p>
+    <section className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div className="space-y-3">
+          <h1 className="text-3xl font-bold text-white">AI海龟汤</h1>
+          <p className="text-white/70">
+            阅读「汤面」，用是非类问题提问。AI 主持人只回答「是 / 否 /
+            无关」，帮你逐步还原真相。
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to="/guide"
+              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition-all hover:bg-white/10"
+            >
+              新手引导
+            </Link>
+            <Link
+              to={`/game?storyId=${STORIES[0]?.id ?? ''}`}
+              className="rounded-xl border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-400/40"
+            >
+              直接开始（示例题）
+            </Link>
           </div>
         </div>
+        <Link
+          to="/"
+          className="flex items-center gap-2 rounded-xl border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-400/40"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span className="hidden sm:inline">欢迎页</span>
+        </Link>
       </div>
 
-      <div className="relative z-10 px-4 py-12">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-6 text-xs font-medium tracking-[0.2em] uppercase text-[var(--text)]">
-            选择谜案
-          </h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {STORIES.map((story) => (
-              <Link
-                key={story.id}
-                to={`/game?storyId=${story.id}`}
-                className="block"
-              >
-                <GameCard story={story} />
-              </Link>
-            ))}
-          </div>
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {STORIES.map((story) => (
+          <Link
+            key={story.id}
+            to={`/game?storyId=${story.id}`}
+            className="block"
+          >
+            <GameCard story={story} />
+          </Link>
+        ))}
       </div>
-    </div>
+    </section>
   )
 }
