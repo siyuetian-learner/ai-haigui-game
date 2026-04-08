@@ -24,6 +24,10 @@ export default {
           '0%, 100%': { transform: 'translateX(-50%) scaleX(1)', opacity: '0.3' },
           '50%': { transform: 'translateX(-50%) scaleX(1.05)', opacity: '0.6' },
         },
+        floatLight: {
+          '0%, 100%': { transform: 'translateX(-50%) translateY(0px)', opacity: '0.6' },
+          '50%': { transform: 'translateX(-50%) translateY(-20px)', opacity: '0.9' },
+        },
       },
       animation: {
         float: 'float 6s ease-in-out infinite',
@@ -31,6 +35,7 @@ export default {
         glow: 'glow 2s ease-in-out infinite',
         tentacle: 'tentacle 4s ease-in-out infinite',
         ripple: 'ripple 4s ease-in-out infinite',
+        floatLight: 'floatLight 6s ease-in-out infinite',
       },
     },
   },
