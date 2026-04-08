@@ -1,82 +1,59 @@
 import { useNavigate } from 'react-router-dom'
 
-export default function AISeaTurtleMysticLanding() {
+const WELCOME_RULES = [
+  'AI会给出一个看似离奇的神秘情景。',
+  '你可以提出是非题，AI只会回答“是”、“否”或“无关”。',
+  '通过不断提问，逐步还原事件的真相。',
+  '考验你的逻辑推理和脑洞能力。',
+]
+
+/**
+ * 参考图是完整的欢迎页视觉稿，这里直接以参考图作为首屏主视觉，
+ * 再在“开始游戏”区域叠加可点击按钮，保证视觉一致的同时保留交互。
+ */
+export default function WelcomePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('/bg-ocean.jpg')" }}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+    <main className="relative min-h-screen overflow-hidden bg-[#07111d] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(78,132,255,0.22),transparent_34%),linear-gradient(180deg,#10243a_0%,#08131f_42%,#050b14_100%)]" />
+      <div className="absolute inset-0 bg-[url('/bg-ocean.jpg')] bg-cover bg-center opacity-20 blur-[2px]" />
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-cyan-300/20 blur-3xl animate-[floatLight_6s_infinite]" />
+      <div className="relative z-10 flex min-h-screen items-center justify-center p-0 sm:p-4">
+        <section
+          aria-labelledby="welcome-title"
+          className="relative aspect-square w-full max-w-[100vh] overflow-hidden sm:rounded-[28px] sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+        >
+          <img
+            src="/reference picture.png"
+            alt="AI海龟汤欢迎页参考图"
+            className="h-full w-full object-cover object-center"
+            draggable={false}
+          />
 
-      <FloatingParticles />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,11,20,0.06),rgba(6,11,20,0.02),rgba(6,11,20,0.08))]" />
 
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
-        <div className="w-full max-w-[900px] text-center">
-          <h1 className="text-[72px] font-serif text-white drop-shadow-[0_0_25px_rgba(140,150,255,0.8)]">
-            AI海龟汤
-          </h1>
-
-          <p className="mt-6 text-[22px] tracking-widest text-white/90">
-            一场推理与真相的神秘之旅
-          </p>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-black/30 backdrop-blur-md p-8 shadow-xl">
-            <h2 className="text-2xl mb-6">💡 游戏规则</h2>
-
-            <div className="space-y-4 text-left text-lg text-white/90">
-              <p>① AI会给出一个看似离奇神秘情景</p>
-              <p>② 你可以提出是/否问题</p>
-              <p>③ AI只回答"是 / 否 / 无关"</p>
-              <p>④ 推理还原事件真相</p>
-            </div>
+          <div className="sr-only">
+            <h1 id="welcome-title">AI海龟汤</h1>
+            <p>一场推理与真相的神秘之旅。</p>
+            <h2>游戏规则</h2>
+            <ul>
+              {WELCOME_RULES.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
           </div>
 
           <button
+            type="button"
+            aria-label="开始游戏"
             onClick={() => navigate('/home')}
-            className="mt-10 px-10 py-5 rounded-xl bg-gradient-to-b from-indigo-400 to-indigo-700 shadow-[0_0_20px_rgba(100,120,255,0.6)] hover:scale-105 transition"
+            className="absolute left-1/2 top-[73.8%] h-[9.8%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent outline-none transition hover:scale-[1.015] focus-visible:ring-4 focus-visible:ring-cyan-300/50"
           >
-            开始游戏 ✦
+            <span className="sr-only">开始游戏</span>
           </button>
-
-          <p className="mt-8 text-white/70">
-            准备好挑战你的智慧了吗？
-          </p>
-        </div>
+        </section>
       </div>
-    </div>
-  )
-}
-
-function FloatingParticles() {
-  const particles = [
-    { cls: 'left-[5%] top-[15%]', size: 'h-1 w-1', opacity: 'opacity-60', delay: '0s' },
-    { cls: 'left-[12%] top-[35%]', size: 'h-1.5 w-1.5', opacity: 'opacity-70', delay: '0.4s' },
-    { cls: 'left-[20%] top-[8%]', size: 'h-0.5 w-0.5', opacity: 'opacity-50', delay: '0.8s' },
-    { cls: 'left-[28%] top-[55%]', size: 'h-2 w-2', opacity: 'opacity-40', delay: '1.2s' },
-    { cls: 'left-[35%] top-[22%]', size: 'h-1 w-1', opacity: 'opacity-65', delay: '1.6s' },
-    { cls: 'left-[42%] top-[68%]', size: 'h-1.5 w-1.5', opacity: 'opacity-55', delay: '2s' },
-    { cls: 'left-[50%] top-[12%]', size: 'h-1 w-1', opacity: 'opacity-70', delay: '2.4s' },
-    { cls: 'left-[58%] top-[45%]', size: 'h-0.5 w-0.5', opacity: 'opacity-45', delay: '2.8s' },
-    { cls: 'left-[65%] top-[28%]', size: 'h-2 w-2', opacity: 'opacity-50', delay: '3.2s' },
-    { cls: 'left-[72%] top-[72%]', size: 'h-1 w-1', opacity: 'opacity-60', delay: '3.6s' },
-    { cls: 'left-[80%] top-[18%]', size: 'h-1.5 w-1.5', opacity: 'opacity-65', delay: '4s' },
-    { cls: 'left-[88%] top-[52%]', size: 'h-1 w-1', opacity: 'opacity-55', delay: '4.4s' },
-    { cls: 'left-[95%] top-[38%]', size: 'h-0.5 w-0.5', opacity: 'opacity-40', delay: '4.8s' },
-    { cls: 'left-[8%] top-[80%]', size: 'h-1 w-1', opacity: 'opacity-30', delay: '5.2s' },
-    { cls: 'left-[45%] top-[85%]', size: 'h-1.5 w-1.5', opacity: 'opacity-35', delay: '5.6s' },
-    { cls: 'left-[75%] top-[88%]', size: 'h-1 w-1', opacity: 'opacity-25', delay: '6s' },
-  ]
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p, idx) => (
-        <span
-          key={idx}
-          className={`absolute rounded-full bg-cyan-100 shadow-[0_0_14px_rgba(186,230,253,0.55)] ${p.cls} ${p.size} ${p.opacity} animate-float`}
-          style={{ animationDelay: p.delay }}
-        />
-      ))}
-    </div>
+    </main>
   )
 }
