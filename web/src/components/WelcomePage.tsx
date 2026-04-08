@@ -17,19 +17,23 @@ export default function WelcomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#07111d] text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(78,132,255,0.22),transparent_34%),linear-gradient(180deg,#10243a_0%,#08131f_42%,#050b14_100%)]" />
-      <div className="absolute inset-0 bg-[url('/bg-ocean.jpg')] bg-cover bg-center opacity-20 blur-[2px]" />
+      <div className="absolute inset-0 bg-[url('/bg-ocean.webp')] bg-cover bg-center opacity-20 blur-[2px]" />
 
       <div className="relative z-10 flex min-h-screen items-center justify-center p-0 sm:p-4">
         <section
           aria-labelledby="welcome-title"
           className="relative aspect-square w-full max-w-[100vh] overflow-hidden sm:rounded-[28px] sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
         >
-          <img
-            src="/reference picture.png"
-            alt="AI海龟汤欢迎页参考图"
-            className="h-full w-full object-cover object-center"
-            draggable={false}
-          />
+          <picture>
+            <source srcSet="/reference-picture.webp" type="image/webp" />
+            <img
+              src="/reference picture.png"
+              alt="AI海龟汤欢迎页参考图"
+              className="h-full w-full object-cover object-center"
+              draggable={false}
+              fetchPriority="high"
+            />
+          </picture>
 
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,11,20,0.06),rgba(6,11,20,0.02),rgba(6,11,20,0.08))]" />
 
